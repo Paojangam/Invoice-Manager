@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invoice Dashboard</title>
+  <link rel="stylesheet" href="Dashboard.css" />
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2 class="logo">InvoiceSys</h2>
+      <nav>
+        <ul>
+          <li><a href="Dashboard.html">Dashboard</a></li>
+          <li><a href="uploadfile.html">Upload Invoice</a></li>
+          <li><a href="invoices.html">Invoices</a></li>
+          <li><a href="Analytics.html">Analytics</a></li>
+          <li class="active"><a href="setting.html">Settings</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <form action="/submit-dashboard" method="POST">
+        <header>
+          <h1>Dashboard Overview</h1>
+          <div class="user-info">Hello, Admin</div>
+        </header>
+
+        <section class="cards">
+          <div class="card">
+            <h3>Total Invoices</h3>
+            <p>120</p>
+          </div>
+          <div class="card">
+            <h3>Pending Approvals</h3>
+            <p>8</p>
+          </div>
+          <div class="card">
+            <h3>Processed Today</h3>
+            <p>25</p>
+          </div>
+        </section>
+
+        <section class="chart-table">
+          <div class="chart">
+            <h3>Monthly Overview</h3>
+            <canvas id="myChart"></canvas>
+          </div>
+          <div class="table-section">
+            <h3>Recent Invoices</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Vendor</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>101</td>
+                  <td>ABC Pvt Ltd</td>
+                  <td>$1200</td>
+                  <td>Approved</td>
+                </tr>
+                <tr>
+                  <td>102</td>
+                  <td>XYZ Corp</td>
+                  <td>$900</td>
+                  <td>Pending</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

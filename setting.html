@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Settings - InvoiceSys</title>
+  <style>
+    /* Dashboard.css snippet */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fb;
+    }
+
+    .dashboard-container {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: linear-gradient(180deg, #2db2ff, #0d8fd9);
+      color: white;
+      padding: 20px;
+    }
+
+    .sidebar .logo {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar li {
+      margin: 20px 0;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .sidebar li a {
+      color: white;
+      text-decoration: none;
+      display: block;
+    }
+
+    .sidebar li:hover,
+    .sidebar li.active {
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .sidebar li.active a {
+      font-weight: bold;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex-grow: 1;
+      padding: 30px;
+      overflow-y: auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    .user-info {
+      font-size: 16px;
+      color: #555;
+    }
+
+    form.settings-form {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      max-width: 600px;
+      margin-top: 30px;
+    }
+
+    form.settings-form label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #0d8fd9;
+    }
+
+    form.settings-form input[type="text"],
+    form.settings-form input[type="email"],
+    form.settings-form input[type="password"],
+    form.settings-form select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    form.settings-form input[type="text"]:focus,
+    form.settings-form input[type="email"]:focus,
+    form.settings-form input[type="password"]:focus,
+    form.settings-form select:focus {
+      border-color: #0d8fd9;
+      outline: none;
+    }
+
+    form.settings-form button {
+      background: #0d8fd9;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    form.settings-form button:hover {
+      background: #0970bb;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2 class="logo">InvoiceSys</h2>
+      <nav>
+        <ul>
+          <li><a href="Dashboard.html">Dashboard</a></li>
+          <li><a href="uploadfile.html">Upload Invoice</a></li>
+          <li><a href="invoices.html">Invoices</a></li>
+          <li><a href="Analytics.html">Analytics</a></li>
+          <li class="active"><a href="setting.html">Settings</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <header>
+        <h1>Settings</h1>
+        <div class="user-info">Hello, Admin</div>
+      </header>
+
+      <form class="settings-form">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter your username" value="admin123" />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" value="admin@example.com" />
+
+        <label for="password">Change Password</label>
+        <input type="password" id="password" placeholder="New password" />
+
+        <label for="notification">Notification Preferences</label>
+        <select id="notification">
+          <option value="all" selected>Receive all notifications</option>
+          <option value="important">Only important notifications</option>
+          <option value="none">No notifications</option>
+        </select>
+
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Upload Invoice</title>
+  
+  <!-- Sidebar & layout CSS (adjust or link your existing CSS) -->
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      height: 100vh;
+    }
+    .sidebar {
+      width: 220px;
+      background: #0d8fd9;
+      color: white;
+      padding: 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar .logo {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+    .sidebar nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar nav ul li {
+      margin-bottom: 20px;
+    }
+    .sidebar nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .sidebar nav ul li.active a {
+      text-decoration: underline;
+    }
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      background: #fff;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    header h1 {
+      margin: 0;
+      color: #333;
+    }
+    .user-info {
+      color: #666;
+      font-weight: 600;
+    }
+    /* Form and inputs */
+    form div {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #333;
+    }
+    input[type="text"],
+    input[type="date"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 25px;
+      background: #0d8fd9;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:disabled {
+      background: #8ac1f7;
+      cursor: not-allowed;
+    }
+    button:hover:not(:disabled) {
+      background: #0977b5;
+    }
+    .error {
+      color: #d9534f;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+    .success {
+      color: #28a745;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+  </style>
+
+  <!-- React and ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <!-- Babel for JSX transpiling -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <h2 class="logo">InvoiceSys</h2>
+    <nav>
+      <ul>
+        <li><a href="Dashboard.html">Dashboard</a></li>
+        <li class="active"><a href="uploadfile.html">Upload Invoice</a></li>
+        <li><a href="invoices.html">Invoices</a></li>
+        <li><a href="Analytics.html">Analytics</a></li>
+        <li><a href="setting.html">Settings</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header>
+      <h1>Upload Invoice</h1>
+      <div class="user-info">Hello, Admin</div>
+    </header>
+
+    <div id="root"></div>
+  </main>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    function InvoiceUpload() {
+      const [file, setFile] = useState(null);
+      const [uploading, setUploading] = useState(false);
+      const [error, setError] = useState('');
+      const [ocrData, setOcrData] = useState(null);
+      const [formData, setFormData] = useState({
+        invoiceNumber: '',
+        vendor: '',
+        date: '',
+        amount: '',
+      });
+      const [saveStatus, setSaveStatus] = useState('');
+
+      function onFileChange(e) {
+        setFile(e.target.files[0]);
+        setOcrData(null);
+        setFormData({
+          invoiceNumber: '',
+          vendor: '',
+          date: '',
+          amount: '',
+        });
+        setError('');
+        setSaveStatus('');
+      }
+
+      async function uploadFile() {
+        if (!file) {
+          setError('Please select a file first');
+          return;
+        }
+
+        setUploading(true);
+        setError('');
+        setSaveStatus('');
+        setOcrData(null);
+
+        const form = new FormData();
+        form.append('file', file);
+
+        try {
+          const res = await fetch('/api/invoices/upload', {
+            method: 'POST',
+            body: form,
+          });
+
+          if (!res.ok) {
+            throw new Error(`Upload failed: ${res.statusText}`);
+          }
+
+          const data = await res.json();
+
+          setOcrData(data);
+          setFormData({
+            invoiceNumber: data.invoiceNumber || '',
+            vendor: data.vendor || '',
+            date: data.date || '',
+            amount: data.amount || '',
+          });
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setUploading(false);
+        }
+      }
+
+      function onInputChange(e) {
+        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+      }
+
+      async function saveInvoice() {
+        setSaveStatus('');
+        setError('');
+
+        try {
+          const res = await fetch('/api/invoices/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+          });
+          if (!res.ok) {
+            throw new Error(`Save failed: ${res.statusText}`);
+          }
+          setSaveStatus('Invoice saved successfully!');
+          setFile(null);
+          setOcrData(null);
+          setFormData({
+            invoiceNumber: '',
+            vendor: '',
+            date: '',
+            amount: '',
+          });
+        } catch (err) {
+          setError(err.message);
+        }
+      }
+
+      return (
+        <div style={{ maxWidth: 600, margin: 'auto' }}>
+          <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={onFileChange} />
+          {file && <p>Selected file: {file.name}</p>}
+
+          <button onClick={uploadFile} disabled={uploading || !file}>
+            {uploading ? 'Uploading...' : 'Upload & Extract'}
+          </button>
+
+          {error && <p className="error">{error}</p>}
+
+          {ocrData && (
+            <>
+              <h3>Review Extracted Data</h3>
+              <form
+                onSubmit={e => {
+                  e.preventDefault();
+                  saveInvoice();
+                }}
+              >
+                <div>
+                  <label>Invoice Number:</label>
+                  <input
+                    name="invoiceNumber"
+                    value={formData.invoiceNumber}
+                    onChange={onInputChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <label>Vendor:</label>
+                  <input
+                    name="vendor"
+                    value={formData.vendor}
+                    onChange={onInputChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <label>Date:</label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={onInputChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <label>Amount:</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    name="amount"
+                    value={formData.amount}
+                    onChange={onInputChange}
+                    required
+                  />
+                </div>
+                <button type="submit">Save Invoice</button>
+              </form>
+            </>
+          )}
+
+          {saveStatus && <p className="success">{saveStatus}</p>}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<InvoiceUpload />);
+  </script>
+</body>
+</html>

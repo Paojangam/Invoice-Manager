@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invoice List</title>
+  <link rel="stylesheet" href="Dashboard.css" />
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2 class="logo">InvoiceSys</h2>
+      <nav>
+        <ul>
+          <li><a href="Dashboard.html">Dashboard</a></li>
+          <li><a href="uploadfile.html">Upload Invoice</a></li>
+          <li><a href="invoices.html">Invoices</a></li>
+          <li><a href="Analytics.html">Analytics</a></li>
+          <li class="active"><a href="setting.html">Settings</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <header>
+        <h1>All Invoices</h1>
+        <div class="user-info">Hello, Admin</div>
+      </header>
+
+      <section class="table-section">
+        <h3>Uploaded Invoices</h3>
+
+        <!-- Optional: Form for future filters -->
+        <form method="GET" action="/invoices.php">
+          <!-- Add filtering inputs here if needed -->
+        </form>
+
+        <table id="invoiceTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>File Name</th>
+              <th>Upload Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Sample static rows. Replace with PHP/Backend-rendered data -->
+            <tr>
+              <td>101</td>
+              <td>invoice-abc.pdf</td>
+              <td>2024-06-01</td>
+              <td>Approved</td>
+              <td><a href="/api/invoices/download/101" target="_blank">Download</a></td>
+            </tr>
+            <tr>
+              <td>102</td>
+              <td>invoice-xyz.jpg</td>
+              <td>2024-06-03</td>
+              <td>Pending</td>
+              <td><a href="/api/invoices/download/102" target="_blank">Download</a></td>
+            </tr>
+            <!-- Repeat rows as needed -->
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
